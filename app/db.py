@@ -110,7 +110,31 @@ def update_stock(product_id: int, new_stock: int) -> int | None:
             )
             result = cur.fetchone()
             if result is not None and get_sku is not None:
-                log_action(cur, "Update", get_sku, result[0], Jsonb(data))
+                log_action(cur, "Stock Update", get_sku, result[0], Jsonb(data))
+            #if result is not None:
+            #    conn.commit() #redundância com with get_conn() as conn
+    #if result is None:
+        #return None if result is None
+    return None if result is None else result[0]
+
+def update_price(product_id: int, new_price: float) -> int | None:
+    data = {"id": product_id, "price": new_price}
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            get_sku = get_sku_by_id(cur, product_id)
+            cur.execute(
+                """
+                UPDATE products
+                SET price = %s,
+                    updated_at = NOW()
+                WHERE id = %s
+                RETURNING id;
+                """,
+                (new_price, product_id),
+            )
+            result = cur.fetchone()
+            if result is not None and get_sku is not None:
+                log_action(cur, "Price Update", get_sku, result[0], Jsonb(data))
             #if result is not None:
             #    conn.commit() #redundância com with get_conn() as conn
     #if result is None:
@@ -141,8 +165,10 @@ def delete_product(product_id: int) -> int | None:
     return None if result is None else result[0]
     
 if __name__ == "__main__":
-    product_by_id = get_product_by_id(22)
-    print(product_by_id)
+    new_price = update_price(75, 22.5)
+    print(new_price)
+    #product_by_id = get_product_by_id(22)
+    #print(product_by_id)
     #delete = delete_product(38)
     #print("Produto removido: ", delete)
     #new_id = create_product("SKU010", "Produto Teste", 9.99, 10)

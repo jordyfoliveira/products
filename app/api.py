@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field, validator, field_validator
-from app.db import list_products, get_product_by_id as db_get_product_by_id, create_product as db_create_product, update_stock as db_update_stock, delete_product as db_delete_product
+from pydantic import BaseModel, Field
+from app.db import list_products, get_product_by_id as db_get_product_by_id, create_product as db_create_product, update_stock as db_update_stock, update_price as db_update_price, delete_product as db_delete_product
 from psycopg.errors import UniqueViolation
 
 
@@ -16,12 +16,14 @@ def get_products():
 class NewProduct(BaseModel):
     sku: str = Field(..., pattern="^SKU\d{3}$")
     name: str = Field("Any", min_length=3)
-    price: float = Field(..., ge=0.1)
+    price: float = Field(..., ge=0.01)
     stock: int = Field(..., gt=0)
     
 class NewStock(BaseModel):
     stock: int = Field(..., ge=0)
-                
+
+class NewPrice(BaseModel):
+    price: float = Field(..., ge=0.01)
     
 @app.get("/")
 def main():
@@ -63,6 +65,16 @@ def update_stock(product_id: int, ns: NewStock):
         raise HTTPException(status_code=404, detail="Produto não encontrado")
     
     return {"id": new_stock, "stock": ns.stock , "message": "Stock atualizado."}
+
+#PATCH /products/{id}/price
+@app.patch("/products/{product_id}/price")
+def update_price(product_id: int, npr: NewPrice):
+    new_price = db_update_price(product_id, npr.price)
+
+    if new_price is None:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
+    
+    return {"id": new_price, "price": npr.price , "message": "Preço atualizado."}
 
 #DELETE /products/{id}
 @app.delete("/products/{product_id}")

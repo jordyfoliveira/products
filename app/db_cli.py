@@ -1,4 +1,4 @@
-from db import list_products, get_product_by_id, create_product, update_stock, delete_product, sku_exists, get_conn
+from db import list_products, get_product_by_id, create_product, update_stock,update_price, delete_product, sku_exists, get_conn
 from pathlib import Path
 import json
 import datetime
@@ -84,6 +84,33 @@ def handle_update_stock() -> str:
         text = f"Stock do produto {product_id} actualizado para {stock}."
     return text
 
+def handle_update_price() -> str:
+    product_id = input("Introduza um id: ")
+    while not product_id.isdigit():
+        print("ID inválido. Introduza pfv o ID do produto.")
+        product_id = input("Introduza um id: ")
+    product_id = int(product_id)
+    
+    price = input("Introduza um preço: ")
+    while True:
+        try:
+            price = float(price)
+            if price >= 0.01:
+                break
+            else:
+                print("Preço inválido")
+                price = input("Introduza um preço: ")
+        except ValueError:
+            print("Preço inválido")
+            price = input("Introduza um preço: ") 
+    
+    text = update_price(product_id, price)
+    if text is None:
+        text = "Produto não encontrado."
+    else:
+        text = f"Preço do produto {product_id} actualizado para {price}."
+    return text
+
 def handle_delete() -> str:
     product_id = input("Introduza um id: ")
     while not product_id.isdigit():
@@ -136,10 +163,11 @@ def menu():
         print("1) Listar produtos")
         print("2) Ver produto por ID")
         print("3) Criar produto")
-        print("4) Atualizar stock")
-        print("5) Apagar produto")
-        print("6) Exportar produtos (JSON)")
-        print("7) Listar audit logs (opcional)")
+        print("4) Actualizar stock")
+        print("5) Actualizar preco")
+        print("6) Apagar produto")
+        print("7) Exportar produtos (JSON)")
+        print("8) Listar audit logs (opcional)")
         print("0) Sair")
         option = input("Escolha uma opção: ").strip()
         
@@ -158,17 +186,21 @@ def menu():
         elif option == "4":
             val = handle_update_stock()
             print(val)
-        
+            
         elif option == "5":
-            val = handle_delete()
+            val = handle_update_price()
             print(val)
         
         elif option == "6":
+            val = handle_delete()
+            print(val)
+        
+        elif option == "7":
             default_output = Path("output") / "products.json"
             val = handle_export_json(default_output)
             print(val)
             
-        elif option == "7":
+        elif option == "8":
             val = handle_logs()
             print (val)
         
