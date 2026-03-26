@@ -1,0 +1,101 @@
+Boa — isso é um passo essencial 👍
+
+## 🧭 1) Ver se já tens git inicializado
+
+Na pasta do projeto:
+
+```powershell
+git status
+```
+
+Se aparecer erro → ainda não tens repo local.
+
+---
+
+## 🧱 2) Se ainda não tens repo local
+
+Inicializa:
+
+```powershell
+git init
+```
+
+---
+
+## 🔗 3) Associar ao GitHub (remote)
+
+Liga o teu projeto ao repositório:
+
+```powershell
+git remote add origin https://github.com/jordyfoliveira/products.git
+```
+
+Confirma:
+
+```powershell
+git remote -v
+```
+
+Deve aparecer:
+
+```text
+origin  https://github.com/jordyfoliveira/products.git (fetch)
+origin  https://github.com/jordyfoliveira/products.git (push)
+```
+
+---
+
+## 📦 4) Primeiro commit
+
+```powershell
+git add .
+git commit -m "Initial commit"
+```
+
+---
+
+## 🚀 5) Push para o GitHub
+
+Se o branch for `main`:
+
+```powershell
+git branch -M main
+git push -u origin main
+```
+
+---
+
+## ⚠️ Possível erro (comum)
+
+Se aparecer algo tipo:
+
+```text
+rejected (fetch first)
+```
+
+faz:
+
+```powershell
+git pull origin main --rebase
+git push -u origin main
+```
+
+---
+
+## ✅ Depois disto
+
+* vais ao GitHub
+* vês o código lá
+* crias o ficheiro `.github/workflows/ci.yml`
+* fazes novo commit → pipeline corre automaticamente
+
+---
+
+## 💬 Diz-me
+
+Se:
+
+* deu erro no `push`
+* ou apareceu mensagem estranha
+
+E seguimos logo a partir daí 👍
