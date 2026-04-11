@@ -1,7 +1,9 @@
 from db import list_products, get_product_by_id, create_product, update_stock,update_price, delete_product, sku_exists, get_conn
+from import_csv import csv_to_db
 from pathlib import Path
 import json
 import datetime
+import os
 
 
 def handle_list() -> str | list[tuple[int, str, str, float, int, bool, datetime.datetime]]:
@@ -125,6 +127,16 @@ def handle_delete() -> str:
         text = "Produto removido."
     return text
 
+def handle_import_csv() -> str:
+    localPath = input("Introduza o caminho do ficheiro CSV: ")
+    
+    try:
+        csv_to_db(localPath)
+        return "Importação concluída."
+    except FileNotFoundError:
+        return "Ficheiro não encontrado. Pfv introduza um caminho válido."
+    
+
 def handle_export_json(path: Path) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     
@@ -168,41 +180,65 @@ def menu():
         print("6) Apagar produto")
         print("7) Exportar produtos (JSON)")
         print("8) Listar audit logs (opcional)")
+        print("9) Importar produtos (CSV) - opcional")
         print("0) Sair")
         option = input("Escolha uma opção: ").strip()
         
         if option == "1":
             val = handle_list()
             print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
         
+                    
         elif option == "2":
             val = handle_get_by_id()
             print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
         
         elif option == "3":
             val = handle_create()
             print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
         
         elif option == "4":
             val = handle_update_stock()
             print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
             
         elif option == "5":
             val = handle_update_price()
             print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
         
         elif option == "6":
             val = handle_delete()
             print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
         
         elif option == "7":
             default_output = Path("output") / "products.json"
             val = handle_export_json(default_output)
             print(val)
-            
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
+                        
         elif option == "8":
             val = handle_logs()
             print (val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
+            
+        elif option == "9":
+            val = handle_import_csv()
+            print(val)
+            clear = input("\nPrima Enter para continuar...")
+            clear = os.system('cls' if os.name == 'nt' else 'clear')
         
         elif option == "0":
             break

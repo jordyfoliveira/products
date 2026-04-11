@@ -1,5 +1,7 @@
 # 🛒 Products API
 
+### 🇬🇧 English
+
 A product management API built with **Python**, **FastAPI**, and **PostgreSQL**, featuring a **CLI interface**, **database logging**, **Docker support**, and **CI/CD automation**.
 
 This project was developed with a focus on practical backend learning, including database integration, REST API development, and pipeline automation.
@@ -30,6 +32,8 @@ This project was developed with a focus on practical backend learning, including
 * REST API with input validation
 * Automated testing with pytest
 * CI/CD pipeline with GitHub Actions
+* Product import from CSV files (pandas)
+* Data validation during import
 
 ---
 
@@ -141,6 +145,61 @@ The project includes a GitHub Actions pipeline that:
 
 ---
 
+## 📥 CSV Import
+
+The application supports bulk product import from CSV files using pandas.
+
+### Supported columns
+
+The CSV file must include the following columns:
+
+* `sku`
+* `name`
+* `price`
+* `stock`
+
+Additional columns (e.g. address, country, etc.) are ignored.
+
+### Example CSV
+
+```csv
+sku,name,price,stock,address,country
+SKU101,Keyboard,19.99,10,Rua A,Portugal
+SKU102,Mouse,9.99,25,Rua B,Spain
+```
+
+### Validation rules
+
+Each row is validated before insertion:
+
+* SKU must follow the format `SKU###`
+* Name must have at least 3 characters
+* Price must be greater than 0.01
+* Stock must be at least 1
+* Duplicate SKUs are ignored
+
+### Usage (CLI)
+
+Select option:
+
+```
+9) Import products (CSV)
+```
+
+Then provide the file path.
+
+### Output
+
+At the end of the import, a summary is displayed:
+
+```
+10 rows read
+7 products imported
+3 products rejected
+```
+
+---
+
 ## 📁 Data Export
 
 Products can be exported to JSON using the CLI, saving results to a local file.
@@ -159,6 +218,8 @@ During this project, I worked on:
 * Database logging strategies
 * CI/CD with GitHub Actions
 * Writing automated tests with pytest
+* Processing CSV data with pandas
+* Handling real-world data issues (invalid values, NaN, incorrect formats)
 
 ---
 
@@ -174,9 +235,9 @@ During this project, I worked on:
 
 Developed by **Jordy Oliveira**
 
-____________________________________________________________________________________________________________________________________________________________________________________
+---
 
-PT-PT
+## 🇵🇹 Portuguese
 
 # 🛒 Products API
 
@@ -210,6 +271,8 @@ Este projeto foi desenvolvido com foco em aprendizagem prática de backend, incl
 * API REST com validação de dados
 * Testes automatizados com pytest
 * Pipeline CI/CD com GitHub Actions
+* Importação de produtos via CSV (pandas)
+* Validação de dados durante a importação
 
 ---
 
@@ -321,6 +384,61 @@ O projeto inclui uma pipeline com GitHub Actions que:
 
 ---
 
+## 📥 Importação CSV
+
+A aplicação suporta a importação em massa de produtos a partir de ficheiros CSV utilizando **pandas**.
+
+### Colunas suportadas
+
+O ficheiro CSV deve conter as seguintes colunas:
+
+* `sku`
+* `name`
+* `price`
+* `stock`
+
+Colunas adicionais (ex: morada, país, etc.) são ignoradas.
+
+### Exemplo de CSV
+
+```csv
+sku,name,price,stock,address,country
+SKU101,Teclado,19.99,10,Rua A,Portugal
+SKU102,Rato,9.99,25,Rua B,Espanha
+```
+
+### Regras de validação
+
+Cada linha é validada antes de ser inserida:
+
+* SKU deve seguir o formato `SKU###`
+* Nome deve ter pelo menos 3 caracteres
+* Preço deve ser superior a 0.01
+* Stock deve ser no mínimo 1
+* SKUs duplicados são ignorados
+
+### Utilização (CLI)
+
+Selecionar a opção:
+
+```
+9) Importar produtos (CSV)
+```
+
+Depois, introduzir o caminho do ficheiro.
+
+### Resultado
+
+No final da importação, é apresentado um resumo:
+
+```
+10 linhas lidas
+7 produtos importados
+3 produtos rejeitados
+```
+
+---
+
 ## 📁 Exportação de dados
 
 Os produtos podem ser exportados para JSON através do CLI, sendo guardados num ficheiro local.
@@ -339,6 +457,8 @@ Durante o desenvolvimento deste projeto foram explorados:
 * Implementação de logging em base de dados
 * Automação com GitHub Actions
 * Escrita de testes com pytest
+* Processamento de dados CSV com pandas
+* Tratamento de dados reais (valores inválidos, NaN, formatos incorretos)
 
 ---
 

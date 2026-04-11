@@ -4,10 +4,10 @@ import datetime
 
 def get_conn():
     return pgsql.connect(
-        #host="localhost",
-        #port=5433,
-        host="db",
-        port="5432",
+        host="localhost",
+        port=5433,
+        #host="db",
+        #port="5432",
         dbname="products_db",
         user="app",
         password="app",
